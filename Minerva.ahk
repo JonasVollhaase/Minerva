@@ -17,13 +17,13 @@ allElements := []
 
 
 
-; Now loop through every folder (and subfolder) in Texts and find the .txt files
+; Now loop through every folder (and subfolder) in Texts and find the .clip files
 Loop Files, %A_ScriptDir%\*.*, D R
 {
     ; Stores all files that are inside this folder
     temp := []
     ; Get every file inside this folder
-    Loop, Files, %A_LoopFileFullPath%\*.txt
+    Loop, Files, %A_LoopFileFullPath%\*.clip
     {
         ; Add the file to the array
         ;~ temp.Push(A_LoopFileFullPath)
@@ -89,31 +89,70 @@ HotstringMenu(PassedArray)
         ; Add each folderName to the menu
         Menu, TheMenu, Add, % folderName, :%TESTE%
     }
+    Menu, TheMenu, Add,
+    Menu, TheMenu, Add, &0 | Modify or setup new Minerva, SetupString
 
     Menu, TheMenu, Show ;, % A_ScreenWidth/2, % A_ScreenHeight/2    ; Puts the menu in the middle of screen
     Menu, TheMenu, DeleteAll                                      ; Removes it after use
 }
 
 
+
 MenuAction() 
 {
     TextArray := StrSplit(A_ThisMenuItem, "|")       ; Split string into two substrings
     TextOut := Trim(TextArray[2])                    ; Get second part, arrays start at 1, trim whitespace
-
-    FileRead, OutputVar, %A_ThisMenu%\%TextOut%           ; Use string from before to finish path to file to be read
-    if (!ErrorLevel)                                ; Only continues on errorlevel
+  
+    FileRead, Clipboard, *C %A_ThisMenu%\%TextOut%   ; Read file passed to it, sends data to clipboard
+    if !(ErrorLevel)                                 ; Continues only if no error
     {
-        TextOut := OutputVar                         ; Text to sendt is the content of the read file
-
-        Clipboard := ""           ; Clears Clipboard
-        Clipboard := TextOut      ; Puts text from file in clipboard
-        Sleep, 350
-        Send, ^v                  ; pastes
+      Send, ^v                                       ; Pastes
     }
 }
 
 
 
+SetupString()
+{
+  futureFolder 	    := ""	; Initialezed variables
+  futureFilename 	:= ""
+  
+  MsgBox, 64, Check, Do you have your Minerva text in clipboard?
+
+  ; Folder check/creation
+  InputBox, futureFolder, Enter Foldername, % "This folder will be placed in:`n" A_ScriptDir, , 300, 140  	; Ask for future foldername
+
+  IfNotExist, %A_ScriptDir%\%futureFolder%	; check if filder exists
+      {
+      MsgBox, 52, Warning, % futureFolder " does not exist.`nDo you wish to create it?" 	; Prompts user if its want to create folder
+      IfMsgBox, No
+          return
+      FileCreateDir, %futureFolder% ; User pressed yes, folder is created
+      }
+
+  else
+     ; return  ; Destination folder already exists, continue 
+
+  Sleep, 100
+  ; Folder check/creation end
+  
+  ; File check/creation
+  InputBox, futureFilename, Enter Filename,  % "Enter filename", , 220, 120 	; Ask for future filename
+ 
+  IfNotExist, %A_ScriptDir%\%futureFolder%\%futureFilename%.clip
+    MsgBox, 64, , created %futureFilename%.clip
+  else
+    MsgBox, 64, Notification, modified %futureFilename%.clip
+  
+  FileAppend,  %ClipboardAll%, %futureFolder%\%futureFileName%.clip     ; Creates file
+  ; File check/creation end
+  
+  Reload ; Refreshes app so menu plays nice next time
+}
+
+
+
+; ################### Classes ################### 
 
 ; Stores a folder path with all files inside (not recursive)
 class FolderElement
