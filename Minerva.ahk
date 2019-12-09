@@ -1,6 +1,6 @@
 #SingleInstance force       ; Cannot have multiple instances of program
 #MaxHotkeysPerInterval 200  ; Won't crash if button held down
-#NoTrayIcon                 ; App not visible in tray
+;#NoTrayIcon                 ; App not visible in tray
 ;#Warn                       ; Debuggin purposese
 #NoEnv                      ; Avoids checking empty variables to see if they are environment variables
 #Persistent                 ; Script will stay running after auto-execute section completes 
@@ -31,8 +31,7 @@ Loop Files, %A_ScriptDir%\*.*, D R
     }
 
     ; Create a new folderElement
-    ;~ element := new folderElement(A_LoopFileFullPath, temp)
-    element := new folderElement(A_LoopFileName, temp)
+      element := new folderElement(A_LoopFileName, temp)
     ; Prepare the array
     element.prepareArray()
     ; Check if the element has files stored, if yes add it to the array
@@ -92,7 +91,7 @@ HotstringMenu(PassedArray)
     Menu, TheMenu, Add,
     Menu, TheMenu, Add, &0 | Modify or setup new Minerva, SetupString
 
-    Menu, TheMenu, Show ;, % A_ScreenWidth/2, % A_ScreenHeight/2    ; Puts the menu in the middle of screen
+    Menu, TheMenu, Show, % A_CaretX, % A_Carety    ; Puts the menu at caret
     Menu, TheMenu, DeleteAll                                      ; Removes it after use
 }
 
@@ -117,7 +116,9 @@ SetupString()
   futureFolder 	    := ""	; Initialezed variables
   futureFilename 	:= ""
   
-  MsgBox, 64, Check, Do you have your Minerva text in clipboard?
+  MsgBox, 52, Check, Do you have your Minerva text in clipboard?	; Prompts user if its want to create folder
+  IfMsgBox, No
+      return
 
   ; Folder check/creation
   InputBox, futureFolder, Enter Foldername, % "This folder will be placed in:`n" A_ScriptDir, , 300, 140  	; Ask for future foldername
@@ -137,7 +138,7 @@ SetupString()
   ; Folder check/creation end
   
   ; File check/creation
-  InputBox, futureFilename, Enter Filename,  % "Enter filename", , 220, 120 	; Ask for future filename
+  InputBox, futureFilename, Enter Filename,  % "Enter filename", , 220, 140 	; Ask for future filename
  
   IfNotExist, %A_ScriptDir%\%futureFolder%\%futureFilename%.clip
     MsgBox, 64, , created %futureFilename%.clip
