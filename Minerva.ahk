@@ -103,6 +103,7 @@ MenuAction()
     TextOut := Trim(TextArray[2])                    ; Get second part, arrays start at 1, trim whitespace
   
     FileRead, Clipboard, *C %A_ThisMenu%\%TextOut%   ; Read file passed to it, sends data to clipboard
+    sleep, 200
     if !(ErrorLevel)                                 ; Continues only if no error
     {
       Send, ^v                                       ; Pastes
