@@ -48,17 +48,6 @@ Loop Files, %A_ScriptDir%\*.*, D R
     HotstringMenu(allElements)
 Return
 
-;Restart script
-CapsLock & r:: 
-    MsgBox, 65, Restarting script, The script will restart when you click OK
-    IfMsgBox OK
-    Reload
-Return
-
-;Kill script
-CapsLock & x::
-ExitApp
-
 
 ; ################### Functions ################### 
 
@@ -89,7 +78,14 @@ HotstringMenu(PassedArray)
         Menu, TheMenu, Add, % folderName, :%TESTE%
     }
     Menu, TheMenu, Add,
-    Menu, TheMenu, Add, &0 | Modify or setup new Minerva, SetupString
+    
+    Menu, Submenu1, Add, &1 | Modify or setup new Minerva, SetupString
+    Menu, Submenu1, Add, &2 | Reload, Reload
+    Menu, Submenu1, Add, &3 | Exit, Exit
+
+  ; Create a submenu in the first menu (a right-arrow indicator). When the user selects it, the second menu is displayed.
+  Menu, TheMenu, Add, &0 Admin, :Submenu1
+  ; end submenu test
 
     Menu, TheMenu, Show, % A_CaretX, % A_Carety    ; Puts the menu at caret
     Menu, TheMenu, DeleteAll                                      ; Removes it after use
@@ -108,9 +104,23 @@ MenuAction()
     {
       Send, ^v                                       ; Pastes
     }
+    Sleep, 200
+    Clipboard = ;
 }
 
+Reload()
+{
+    MsgBox, 65, Restarting script, The script will restart when you click OK
+    IfMsgBox OK
+    Reload
+}
 
+Exit()
+{
+    MsgBox, 65, Exiting script, The script will exit when you click OK
+    IfMsgBox OK
+    ExitApp
+}
 
 SetupString()
 {
@@ -190,37 +200,3 @@ class FolderElement
 
 
 
-
-;    ############################## ROOT LEVEL
-
-
-;~ RootFolder()
-
-;~ RootFolder()
-;~ {
-    ;~ ; Get all elements of the root folder (because we won't find them using only the second loop)
-    ;~ ; Stores all files that are inside the root folder
-    ;~ temp := []
-
-    ;~ Loop Files, %A_ScriptDir%\*.txt
-    ;~ {
-        ;~ ; Add the file to the array
-        ;~ temp.Push(A_LoopFileFullPath)
-    ;~ }
-
-
-    ;~ ; Create a new folderElement
-    ;~ element := new folderElement(A_ScriptDir, temp)
-    ;~ ; Prepare the array
-    ;~ element.prepareArray()
-
-    ;~ ; Check if the element has files stored, if yes add it to the array
-    ;~ If (element.hasFiles())
-    ;~ {
-        ;~ ; Pushes to the main array
-        ;~ allElements.Push(element)
-        ;~ MsgBox, % "pushing" element.folderName
-    ;~ }
-    ;~ else
-        ;~ MsgBox, Root is empty
-;~ }
