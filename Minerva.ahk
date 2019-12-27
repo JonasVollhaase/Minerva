@@ -200,6 +200,3 @@ class FolderElement
         Return (this.filesInFolder[1] = "") ? false : true      ; Shorthand if/else
     }
 }
-
-
-
