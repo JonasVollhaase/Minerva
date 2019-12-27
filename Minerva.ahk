@@ -1,12 +1,18 @@
+; Jonas Vollhaase Mikkelsen, December 2019
+; Contact: JM@TheMarketingGuy.dk
+; 
+; Used for formatted text inputter
+;
+
+
 #SingleInstance force       ; Cannot have multiple instances of program
 #MaxHotkeysPerInterval 200  ; Won't crash if button held down
-;#NoTrayIcon                 ; App not visible in tray
-;#Warn                       ; Debuggin purposese
+#Warn                       ; Debuggin purposese
 #NoEnv                      ; Avoids checking empty variables to see if they are environment variables
 #Persistent                 ; Script will stay running after auto-execute section completes 
 
 SetWorkingDir, %A_ScriptDir%
-SetKeyDelay, 0
+Menu, Tray, Icon, icon.ico  ; Credit for Icon: https://www.fatcow.com/
 
 
 ; ################### Begin ################### 
@@ -15,15 +21,13 @@ SetKeyDelay, 0
 allElements := []
 
 
-
-
 ; Now loop through every folder (and subfolder) in Texts and find the .clip files
 Loop Files, %A_ScriptDir%\*.*, D R
 {
     ; Stores all files that are inside this folder
     temp := []
     ; Get every file inside this folder
-    Loop, Files, %A_LoopFileFullPath%\*.clip
+    Loop, Files, %A_LoopFileFullPath%\*.rtf
     {
         ; Add the file to the array
         ;~ temp.Push(A_LoopFileFullPath)
@@ -80,8 +84,8 @@ HotstringMenu(PassedArray)
     Menu, TheMenu, Add,
     
     Menu, Submenu1, Add, &1 | Modify or setup new Minerva, SetupString
-    Menu, Submenu1, Add, &2 | Reload, Reload
-    Menu, Submenu1, Add, &3 | Exit, Exit
+    Menu, Submenu1, Add, &2 | Reload, ReloadProgram
+    Menu, Submenu1, Add, &3 | Exit, ExitApp
 
   ; Create a submenu in the first menu (a right-arrow indicator). When the user selects it, the second menu is displayed.
   Menu, TheMenu, Add, &0 Admin, :Submenu1
@@ -98,26 +102,25 @@ MenuAction()
     TextArray := StrSplit(A_ThisMenuItem, "|")       ; Split string into two substrings
     TextOut := Trim(TextArray[2])                    ; Get second part, arrays start at 1, trim whitespace
   
-    FileRead, Clipboard, *C %A_ThisMenu%\%TextOut%   ; Read file passed to it, sends data to clipboard
-    sleep, 200
-    if !(ErrorLevel)                                 ; Continues only if no error
-    {
-      Send, ^v                                       ; Pastes
-    }
-    Sleep, 200
-    Clipboard = ;
+    FilePath := A_ScriptDir "\" A_ThisMenu "\" TextOut
+
+    ;MsgBox, % FilePath
+
+    oDoc := ComObjGet(FilePath)
+    oDoc.Range.FormattedText.Copy
+    oDoc.Close(0)
+    Send, ^v
 }
 
-Reload()
+ReloadProgram()
 {
-    MsgBox, 65, Restarting script, The script will restart when you click OK
-    IfMsgBox OK
+    MsgBox, 64, info, Restarting program
     Reload
 }
 
-Exit()
+ExitApp()
 {
-    MsgBox, 65, Exiting script, The script will exit when you click OK
+    MsgBox, 48, About to exit script, This app will TERMINATE when you click OK
     IfMsgBox OK
     ExitApp
 }
