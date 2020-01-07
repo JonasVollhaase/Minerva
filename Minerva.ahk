@@ -48,8 +48,16 @@ Loop Files, %A_ScriptDir%\*.*, D R
 
 
 ; ################### HOTKEY ################### 
-^Space::
-    HotstringMenu(allElements)
+
+
+		
+Control & Space::
+if not WinActive("ahk_class XLMAIN")
+    {
+    HotstringMenu(allElements)          ; starts minerva, if not in excel
+    }
+else
+    send, ^{space}                      ; Sends Crtl+space, if in excel
 Return
 
 
@@ -104,12 +112,18 @@ MenuAction()
   
     FilePath := A_ScriptDir "\" A_ThisMenu "\" TextOut
 
-    ;MsgBox, % FilePath
+    ClipboardVar := Clipboard   ;stores content of clipboard in variable
+    Clipboard =                 ;clears clipboard
 
+    ToolTip, Pasting, A_ScreenWidth/2, A_ScreenHeight/2
     oDoc := ComObjGet(FilePath)
+    ;Sleep, 300
     oDoc.Range.FormattedText.Copy
+    Sleep, 100
     oDoc.Close(0)
+    Sleep, 300
     Send, ^v
+    ToolTip,
 }
 
 ReloadProgram()
@@ -200,3 +214,6 @@ class FolderElement
         Return (this.filesInFolder[1] = "") ? false : true      ; Shorthand if/else
     }
 }
+
+
+
