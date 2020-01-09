@@ -217,5 +217,73 @@ class FolderElement
     }
 }
 
+; ######################################################################## HotStrings ########################################################################
+
+::,dt::
+FormatTime, CurrentDateTime,, dd-MM-yyyy hh:mm  ; It will look like 06-11-2019 04:59
+SendInput %CurrentDateTime%
+return
+
+::,d::
+FormatTime, CurrentDateTime,, dd-MM-yyyy ; It will look like 06-11-2019
+SendInput %CurrentDateTime%
+return
+
+::,t::
+FormatTime, CurrentDateTime,, hh:mm  ; It will look like 04:59
+SendInput %CurrentDateTime%
+return
+
+:*:,sd::
+:*:,fb::
+FormatTime, CurrentDateTime,, ddMMyy ; It will look like 06-11-2019
+SendInput %CurrentDateTime% 
+return
+
+:*:,sig::
+Send, %A_UserName%
+return
+
+:*C:ahk::autohotkey
+:*C:tmg::The Marketing Guy 
+
+:*:,m::
+Send, %A_UserName%@Themarketingguy.dk
+return
+
+:*:,ra::{U+2192}	; right arrow
+:*:,la::{U+2190}	; left arrow
+:*:,up::{U+2191}	; up arrow
+:*:,ua::{U+2191}	; up arrow
+:*:,da::{U+2193}	; down arrow
+:*:,addr::Frederiksberggade 15, 3 sal, 1459 København 	; adress
+:*:,cvr::37814059	; CVR
+
+; Hearts
+:*:,hearteye::{U+1F60D}	: heart eyes
+:*:,smile::{U+1F600}	: smiley
+
+
+
+;AI custom
+::eml::ahmadibrahim41@hotmail.com
+::emll::ai@themarketingguy.dk
+::nvn::Ahmad Ibrahim
+::addr::Frederiksberggade 15, 3 sal, 1459 København
+::nrr::{+}45 28 34 88 50
+
+; Budget calculator 
+:*B0:,bud:: 
+Input, name, V, {Enter}{Tab}{Space}, 	; Same end keys as regular Hotstrings
+Base	:=	3500
+Days 	:= 	5
+Amount	:=	name
+Value 	:=  Round(Base / Days / Amount, 2) ; Round to two decimal places
+numberOfBackSpaces:=strlen(name) + 5 ; Deletes ",bud[n]" before inserting
+Send, {Backspace %numberOfBackSpaces%}%Value%
+return
+
+; UTM
+:*:,utm::utm_source=Facebook&utm_medium=CPM&utm_campaign=[NAME]
 
 
