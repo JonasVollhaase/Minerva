@@ -1,4 +1,4 @@
-; Jonas Vollhaase Mikkelsen, December 2019
+; Jonas Vollhaase Mikkelsen, January 2019
 ; Contact: JM@TheMarketingGuy.dk
 ; 
 ; Used for formatted text inputter
@@ -12,8 +12,10 @@
 #Persistent                 ; Script will stay running after auto-execute section completes 
 
 SetWorkingDir, %A_ScriptDir%
-Menu, Tray, Icon, icon.ico  ; Credit for Icon: https://www.fatcow.com/
 
+;icon
+if A_IsCompiled
+    Menu, Tray, Icon, __ASSETS__\Logo\icon.ico 
 
 ; ################### Begin ################### 
 
@@ -119,9 +121,9 @@ MenuAction()
     oDoc := ComObjGet(FilePath)
     ;Sleep, 300
     oDoc.Range.FormattedText.Copy
-    Sleep, 100
+    Sleep, 150
     oDoc.Close(0)
-    Sleep, 300
+    Sleep, 400
     Send, ^v
     ToolTip,
 }
