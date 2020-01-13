@@ -244,33 +244,10 @@ return
 Send, %A_UserName%
 return
 
-:*C:ahk::autohotkey
-:*C:tmg::The Marketing Guy 
-
 :*:,m::
 Send, %A_UserName%@Themarketingguy.dk
 return
 
-:*:,ra::{U+2192}	; right arrow
-:*:,la::{U+2190}	; left arrow
-:*:,up::{U+2191}	; up arrow
-:*:,ua::{U+2191}	; up arrow
-:*:,da::{U+2193}	; down arrow
-:*:,addr::Frederiksberggade 15, 3 sal, 1459 København 	; adress
-:*:,cvr::37814059	; CVR
-
-; Hearts
-:*:,hearteye::{U+1F60D}	: heart eyes
-:*:,smile::{U+1F600}	: smiley
-
-
-
-;AI custom
-::eml::ahmadibrahim41@hotmail.com
-::emll::ai@themarketingguy.dk
-::nvn::Ahmad Ibrahim
-::addr::Frederiksberggade 15, 3 sal, 1459 København
-::nrr::{+}45 28 34 88 50
 
 ; Budget calculator 
 :*B0:,bud:: 
@@ -283,7 +260,24 @@ numberOfBackSpaces:=strlen(name) + 5 ; Deletes ",bud[n]" before inserting
 Send, {Backspace %numberOfBackSpaces%}%Value%
 return
 
-; UTM
-:*:,utm::utm_source=Facebook&utm_medium=CPM&utm_campaign=[NAME]
 
 
+if FileExist("hotstrings.txt")
+{
+	Loop
+	{
+		FileReadLine, line, hotstrings.txt, %A_Index%
+		if ErrorLevel
+			break
+		
+		; ifstatement for comment goes here
+		
+		TextArray 	:= StrSplit(line, ";")       ; Split string into two substrings
+		callsign 	:= Trim(TextArray[1])
+		replacement	:= Trim(TextArray[2])
+		
+		Hotstring(callsign, replacement)
+		
+	}
+	return	
+}
