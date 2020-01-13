@@ -7,7 +7,6 @@
 
 #SingleInstance force       ; Cannot have multiple instances of program
 #MaxHotkeysPerInterval 200  ; Won't crash if button held down
-#Warn                       ; Debuggin purposese
 #NoEnv                      ; Avoids checking empty variables to see if they are environment variables
 #Persistent                 ; Script will stay running after auto-execute section completes 
 
@@ -17,10 +16,36 @@ SetWorkingDir, %A_ScriptDir%
 if A_IsCompiled
     Menu, Tray, Icon, __ASSETS__\Logo\icon.ico 
 
+
+; ################### Hotstring init ################### 
+
+if FileExist("hotstrings.txt")
+{
+	Loop
+	{
+        MsgBox, loopstart
+		FileReadLine, line, hotstrings.txt, %A_Index%
+		if ErrorLevel
+			break
+		
+		; ifstatement for comment goes here
+		
+		TextArray 	:= StrSplit(line, ";")       ; Split string into two substrings
+		callsign 	:= Trim(TextArray[1])
+		replacement	:= Trim(TextArray[2])
+		
+		Hotstring(callsign, replacement)
+		
+	}
+	return	
+}
+
 ; ################### Begin ################### 
 
 ; Stores all folderElements
 allElements := []
+
+
 
 
 ; Now loop through every folder (and subfolder) in Texts and find the .clip files
@@ -261,23 +286,3 @@ Send, {Backspace %numberOfBackSpaces%}%Value%
 return
 
 
-
-if FileExist("hotstrings.txt")
-{
-	Loop
-	{
-		FileReadLine, line, hotstrings.txt, %A_Index%
-		if ErrorLevel
-			break
-		
-		; ifstatement for comment goes here
-		
-		TextArray 	:= StrSplit(line, ";")       ; Split string into two substrings
-		callsign 	:= Trim(TextArray[1])
-		replacement	:= Trim(TextArray[2])
-		
-		Hotstring(callsign, replacement)
-		
-	}
-	return	
-}
