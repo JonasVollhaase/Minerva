@@ -14,7 +14,11 @@ SetWorkingDir, %A_ScriptDir%
 
 ;icon
 if A_IsCompiled
+    {
     Menu, Tray, Icon, __ASSETS__\Logo\icon.ico 
+    MsgBox, 64, Minerva er TÆNDT, Du har sucessfuldt tændt for programmet.`nSe bare det fine "m" i din taskbar
+    }
+
 
 
 ; ################### Hotstring init ################### 
@@ -23,8 +27,7 @@ if FileExist("hotstrings.txt")
 {
 	Loop
 	{
-        MsgBox, loopstart
-		FileReadLine, line, hotstrings.txt, %A_Index%
+        FileReadLine, line, hotstrings.txt, %A_Index%
 		if ErrorLevel
 			break
 		
@@ -37,7 +40,6 @@ if FileExist("hotstrings.txt")
 		Hotstring(callsign, replacement)
 		
 	}
-	return	
 }
 
 ; ################### Begin ################### 
@@ -93,6 +95,7 @@ Return
 
 HotstringMenu(PassedArray)
 {
+        
     Loop % PassedArray.Length()
     {
         ; The current item
@@ -118,9 +121,8 @@ HotstringMenu(PassedArray)
     }
     Menu, TheMenu, Add,
     
-    Menu, Submenu1, Add, &1 | Modify or setup new Minerva, SetupString
-    Menu, Submenu1, Add, &2 | Reload, ReloadProgram
-    Menu, Submenu1, Add, &3 | Exit, ExitApp
+    Menu, Submenu1, Add, &1 | Reload, ReloadProgram
+    Menu, Submenu1, Add, &2 | Exit, ExitApp
 
   ; Create a submenu in the first menu (a right-arrow indicator). When the user selects it, the second menu is displayed.
   Menu, TheMenu, Add, &0 Admin, :Submenu1
@@ -143,10 +145,14 @@ MenuAction()
     Clipboard =                 ;clears clipboard
 
     ToolTip, Pasting, A_ScreenWidth/2, A_ScreenHeight/2
+    
+    Send, temp
+    Send, {Backspace 4}
+    
     oDoc := ComObjGet(FilePath)
-    ;Sleep, 300
+    Sleep, 200
     oDoc.Range.FormattedText.Copy
-    Sleep, 150
+    Sleep, 200
     oDoc.Close(0)
     Sleep, 400
     Send, ^v
@@ -165,47 +171,6 @@ ExitApp()
     IfMsgBox OK
     ExitApp
 }
-
-SetupString()
-{
-  futureFolder 	    := ""	; Initialezed variables
-  futureFilename 	:= ""
-  
-  MsgBox, 52, Check, Do you have your Minerva text in clipboard?	; Prompts user if its want to create folder
-  IfMsgBox, No
-      return
-
-  ; Folder check/creation
-  InputBox, futureFolder, Enter Foldername, % "This folder will be placed in:`n" A_ScriptDir, , 300, 140  	; Ask for future foldername
-
-  IfNotExist, %A_ScriptDir%\%futureFolder%	; check if filder exists
-      {
-      MsgBox, 52, Warning, % futureFolder " does not exist.`nDo you wish to create it?" 	; Prompts user if its want to create folder
-      IfMsgBox, No
-          return
-      FileCreateDir, %futureFolder% ; User pressed yes, folder is created
-      }
-
-  else
-     ; return  ; Destination folder already exists, continue 
-
-  Sleep, 100
-  ; Folder check/creation end
-  
-  ; File check/creation
-  InputBox, futureFilename, Enter Filename,  % "Enter filename", , 220, 140 	; Ask for future filename
- 
-  IfNotExist, %A_ScriptDir%\%futureFolder%\%futureFilename%.clip
-    MsgBox, 64, , created %futureFilename%.clip
-  else
-    MsgBox, 64, Notification, modified %futureFilename%.clip
-  
-  FileAppend,  %ClipboardAll%, %futureFolder%\%futureFileName%.clip     ; Creates file
-  ; File check/creation end
-  
-  Reload ; Refreshes app so menu plays nice next time
-}
-
 
 
 ; ################### Classes ################### 
@@ -284,5 +249,3 @@ Value 	:=  Round(Base / Days / Amount, 2) ; Round to two decimal places
 numberOfBackSpaces:=strlen(name) + 5 ; Deletes ",bud[n]" before inserting
 Send, {Backspace %numberOfBackSpaces%}%Value%
 return
-
-
