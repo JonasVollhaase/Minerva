@@ -223,7 +223,7 @@ SendInput %CurrentDateTime%
 return
 
 ::,d::
-FormatTime, CurrentDateTime,, dd-MM-yyyy ; It will look like 06-11-2019
+FormatTime, CurrentDateTime,, dd-MM-yyyy ; It will look like 06-11-2020
 SendInput %CurrentDateTime%
 return
 
@@ -234,7 +234,7 @@ return
 
 :*:,sd::
 :*:,fb::
-FormatTime, CurrentDateTime,, ddMMyy ; It will look like 06-11-2019
+FormatTime, CurrentDateTime,, ddMMyy ; It will look like 061120
 SendInput %CurrentDateTime% 
 return
 
