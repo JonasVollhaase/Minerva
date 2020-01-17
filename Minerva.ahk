@@ -141,22 +141,30 @@ MenuAction()
   
     FilePath := A_ScriptDir "\" A_ThisMenu "\" TextOut
 
-    ClipboardVar := Clipboard   ;stores content of clipboard in variable
-    Clipboard =                 ;clears clipboard
-
-    ToolTip, Pasting, A_ScreenWidth/2, A_ScreenHeight/2
+    ClipboardVar := ClipboardAll    ;stores content of clipboard in variable
+    Clipboard =                     ;clears clipboard
     
-    Send, temp
-    Send, {Backspace 4}
-    
+    Send, {U+231B}
+      
     oDoc := ComObjGet(FilePath)
     Sleep, 200
     oDoc.Range.FormattedText.Copy
-    Sleep, 200
+    ;Sleep, 200
+    
+    ClipWait, 2
+    if ErrorLevel
+    {
+        MsgBox, The attempt to copy text onto the clipboard failed.
+        return
+    }
+    
     oDoc.Close(0)
-    Sleep, 400
+    Sleep, 200
+    Send, {Backspace 1}
+    Sleep, 100
     Send, ^v
-    ToolTip,
+  
+    ;~ Clipboard := ClipboardVar
 }
 
 ReloadProgram()
@@ -234,7 +242,7 @@ return
 Send, %A_UserName%
 return
 
-:*:,m::
+:*:,mail::
 Send, %A_UserName%@Themarketingguy.dk
 return
 
@@ -249,3 +257,5 @@ Value 	:=  Round(Base / Days / Amount, 2) ; Round to two decimal places
 numberOfBackSpaces:=strlen(name) + 5 ; Deletes ",bud[n]" before inserting
 Send, {Backspace %numberOfBackSpaces%}%Value%
 return
+
+
