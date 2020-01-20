@@ -21,7 +21,7 @@ if A_IsCompiled
 
 
 
-; ################### Hotstring init ################### 
+; ######################################################################## Hotstring Init ########################################################################
 
 if FileExist("hotstrings.txt")
 {
@@ -30,7 +30,17 @@ if FileExist("hotstrings.txt")
         FileReadLine, line, hotstrings.txt, %A_Index%
 		if ErrorLevel
 			break
-		
+        
+        FirstLetter         := SubStr(line, 1, 1) 
+        CommentIdentifier   := "#"
+        
+        if (FirstLetter = CommentIdentifier)
+        {
+            continue
+        }
+    
+        
+        
 		; ifstatement for comment goes here
 		
 		TextArray 	:= StrSplit(line, ";")       ; Split string into two substrings
@@ -42,7 +52,7 @@ if FileExist("hotstrings.txt")
 	}
 }
 
-; ################### Begin ################### 
+; ######################################################################## Begin ########################################################################
 
 ; Stores all folderElements
 allElements := []
@@ -76,7 +86,7 @@ Loop Files, %A_ScriptDir%\*.*, D R
 }
 
 
-; ################### HOTKEY ################### 
+; ######################################################################## Hotkeys ########################################################################
 
 
 		
@@ -90,7 +100,7 @@ else
 Return
 
 
-; ################### Functions ################### 
+; ######################################################################## Functions ########################################################################
 
 
 HotstringMenu(PassedArray)
@@ -181,7 +191,7 @@ ExitApp()
 }
 
 
-; ################### Classes ################### 
+; ######################################################################## Classes ########################################################################
 
 ; Stores a folder path with all files inside (not recursive)
 class FolderElement
