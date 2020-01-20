@@ -161,10 +161,10 @@ MenuAction()
     oDoc.Close(0)
     Sleep, 200
     Send, {Backspace 1}
-    Sleep, 100
-    Send, ^v
+    ClipWait
+    Send, {CTRLDOWN}v{CTRLUP}
   
-    ;~ Clipboard := ClipboardVar
+    ;~ Clipboard := ClipboardVar  ← Kommenter mig på igen en dag 
 }
 
 ReloadProgram()
@@ -257,5 +257,3 @@ Value 	:=  Round(Base / Days / Amount, 2) ; Round to two decimal places
 numberOfBackSpaces:=strlen(name) + 5 ; Deletes ",bud[n]" before inserting
 Send, {Backspace %numberOfBackSpaces%}%Value%
 return
-
-
