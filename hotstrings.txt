@@ -1,0 +1,27 @@
+# 	Jonas Vollhaase Mikkelsen, May 2020
+#	Contact: Mikkelsen.v.jonas@gmail.com
+# 
+#	---------------------------------------------------------------------------
+#
+#	The following will replace the text, AS SOON AS you type it
+#
+#	:*:HOTSTRING	;	REPLACEMENT		; 	COMMENT
+#
+	:*:,ahk 	; 	Autohotkey		
+	:*:,ra 		; 	{U+2192}		;	Right arrow
+	:*:,la 		; 	{U+2190}		;	Left Arrow
+	:*:,up 		; 	{U+2191}		;	Up arrow
+	:*:,ua 		; 	{U+2191}		;	Up arrow
+	:*:,da		; 	{U+2193}		;	Down arrow
+	:*:,ch 		; 	{U+2611}		; 	Checkmark
+	:*:,ok 		; 	{U+2611}		; 	Checkmark
+	:*:,no 		; 	{U+274C}		; 	Cross
+	:*:,vink	;	{U+1F44B}		; 	Hello hand
+	:*:,bed		;	{U+1F64F}		;	Praying hands	
+#
+#	The following will replace the text when you have written AND PRESSED {tab}, {enter} or {space}
+#
+#	::HOTSTRING	;	REPLACEMENT			; 	COMMENT
+#
+	::,ex		; 	Text that needs further input	;	Example
+	
