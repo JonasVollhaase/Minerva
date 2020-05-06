@@ -6,12 +6,10 @@ Minerva uses a hotkey combination to bring up a menu, from where users can quick
 
 # Installation
 
-If you've already installed AutoHotKey, just open vim.ahk with AutoHotkey.
+If you've already installed AutoHotKey, just open Minerva.ahk with AutoHotkey.
 
-# Executable
+### Executable
 You can also use Minerva.exe, which can work standalone w/o AutoHotKey.
-
-(TODO) To get executable, go to the releases page and download the latest one
 
 # Usage
 By default, `Crtl+space` brings up the Minerva menu. From here, navigate to the desired folder, and choose the text you wish to insert.
