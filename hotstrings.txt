@@ -24,4 +24,3 @@
 #	::HOTSTRING	;	REPLACEMENT			; 	COMMENT
 #
 	::,ex		; 	Text that needs further input	;	Example
-	
