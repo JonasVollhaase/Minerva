@@ -62,3 +62,4 @@ Standing in the directory that Minerva lays in:
 * Make Minerva look recursively to enable nested folders
 * Performance optimize
 * Make .ini file 
+* .... Make script ignore GitIgnore
